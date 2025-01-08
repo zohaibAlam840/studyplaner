@@ -15,6 +15,10 @@ export default function ProfileLayout() {
         name="privacy"
         options={{ title: "Privacy Settings" }} // Privacy Settings Screen
       />
+      <Stack.Screen
+        name="logout"
+        options={{ title: "Privacy Settings" }} // Privacy Settings Screen
+      />     
     </Stack>
   );
 }

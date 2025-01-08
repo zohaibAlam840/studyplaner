@@ -41,10 +41,12 @@ const ProfileScreen = () => {
         </Link>
 
         {/* Logout */}
-        <Pressable style={styles.option}>
-          <AntDesign name="logout" size={24} color="#FF5757" />
-          <Text style={styles.optionText}>Logout</Text>
-        </Pressable>
+        <Link href="/logout" asChild>
+          <Pressable style={styles.option}>
+            <AntDesign name="logout" size={24} color="#FF5757" />
+            <Text style={styles.optionText}>Logout</Text>
+          </Pressable>
+        </Link>
       </View>
     </View>
   );

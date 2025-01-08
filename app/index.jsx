@@ -1,36 +1,61 @@
-import {View, Text, StyleSheet, Pressable} from 'react-native'
-import { Link } from 'expo-router'
-import {useState} from "react"
+// import React, { useEffect, useState } from "react";
+// import { useRouter } from "expo-router";
 
-const app= () => {
-  const [count, setCount] = useState(0)
-  return(
-    <View style={style.container}>
-      <Text style={style.text}>Hello world</Text>
-      <Link href="/explore" style={style.text} asChild>
-        <Pressable>
-         <Text>explore</Text>
-        </Pressable>
-        </Link>
-    </View>
-  )
-}
+// const Index = () => {
+//   const router = useRouter();
+//   const [isReady, setIsReady] = useState(false);
 
-const style = StyleSheet.create({
-  container:{
-      color: "white",
-      flex: 1,
-      flexDirection: "column",
-      display: 'flex',
-      alignItems: "center",
-      justifyContent: "center"
-  },
-  text:{
-    color: 'white',
-    fontSize: 42,
-    fontWeight: "bold",
-    textAlign: "center",
+//   useEffect(() => {
+//     // Wait for layout to mount before redirecting
+//     const timeout = setTimeout(() => {
+//       setIsReady(true);
+//     }, 100); // Delay to ensure layout has mounted
+
+//     return () => clearTimeout(timeout);
+//   }, []);
+
+//   useEffect(() => {
+//     if (isReady) {
+//       // Redirect to the (tabs) folder
+//       router.replace("/(tabs)");
+//     }
+//   }, [isReady, router]);
+
+//   return null; // No UI needed for this redirection
+// };
+
+// export default Index;
+
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "expo-router";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import Firebase Auth
+
+const Index = () => {
+  const router = useRouter();
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const auth = getAuth(); // Initialize Firebase Auth
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // If user is logged in, navigate to (tabs)
+        router.replace("/(tabs)");
+      } else {
+        // If user is not logged in, navigate to auth/login
+        router.replace("/(auth)");
+      }
+      setIsReady(true); // Mark the check as complete
+    });
+
+    return () => unsubscribe(); // Cleanup listener on component unmount
+  }, [router]);
+
+  if (!isReady) {
+    return null; // Optional: Add a loading screen here if needed
   }
-})
 
-export default app
+  return null; // No UI needed for redirection
+};
+
+export default Index;
